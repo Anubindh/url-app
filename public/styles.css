@@ -1,0 +1,30 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 700px;
+  margin: auto;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+nav a {
+  margin-left: 10px;
+  text-decoration: none;
+  color: blue;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+input, textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+button {
+  padding: 8px 15px;
+  cursor: pointer;
+}

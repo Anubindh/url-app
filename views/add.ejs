@@ -1,0 +1,10 @@
+<h2>Add New Link</h2>
+<% if (typeof error !== 'undefined') { %>
+  <p style="color: red;"><%= error %></p>
+<% } %>
+<form action="/links/add" method="POST">
+  <input name="url" placeholder="URL" required />
+  <input name="tag" placeholder="Tag (optional)" />
+  <textarea name="note" placeholder="Note (optional)"></textarea>
+  <button>Add Link</button>
+</form>

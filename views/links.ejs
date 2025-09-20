@@ -1,0 +1,14 @@
+<h2>My Links</h2>
+<% if (links.length === 0) { %>
+  <p>No links yet. <a href="/links/add">Add one</a>.</p>
+<% } else { %>
+  <ul>
+    <% links.forEach(link => { %>
+      <li>
+        <a href="<%= link.url %>" target="_blank"><%= link.url %></a> 
+        (<%= link.tag %>) - <%= link.note %> 
+        <a href="/links/delete/<%= link._id %>" onclick="return confirm('Delete this link?')">Delete</a>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
