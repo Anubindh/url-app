@@ -3,9 +3,16 @@ const router = express.Router();
 const linkController = require('../controllers/linkController');
 const auth = require('../middleware/auth');
 
+router.get('/', auth, linkController.getLinks);
+
 router.get('/links', auth, linkController.getLinks);
+
 router.get('/links/add', auth, linkController.showAddForm);
+
 router.post('/links/add', auth, linkController.addLink);
+
 router.get('/links/delete/:id', auth, linkController.deleteLink);
+
+router.get('/s/:shortCode', linkController.redirectLink);
 
 module.exports = router;

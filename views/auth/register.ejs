@@ -1,9 +1,77 @@
-<h2>Register</h2>
-<% if (typeof error !== 'undefined') { %>
-  <p style="color: red;"><%= error %></p>
-<% } %>
-<form action="/register" method="POST">
-  <input name="username" placeholder="Username" required />
-  <input type="password" name="password" placeholder="Password" required />
-  <button>Register</button>
-</form>
+<div class="auth-page">
+
+  <div class="auth-card">
+
+    <div class="auth-brand">
+      <div class="auth-logo">↗</div>
+
+      <div>
+        <h1>LinkVault</h1>
+        <span>Smart Link Management</span>
+      </div>
+    </div>
+
+    <div class="auth-heading">
+      <h2>Create your account</h2>
+      <p>Start saving and tracking your links in one place.</p>
+    </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="auth-error">
+        <span>⚠</span>
+        <%= error %>
+      </div>
+    <% } %>
+
+    <form action="/register" method="POST" class="auth-form">
+
+      <div class="form-group">
+        <label for="username">Username</label>
+
+        <div class="input-wrapper">
+          <span>◉</span>
+
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+
+        <div class="input-wrapper">
+          <span>●</span>
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Create a password"
+            required
+          />
+        </div>
+      </div>
+
+      <button type="submit" class="auth-button">
+        Create Account
+        <span>→</span>
+      </button>
+
+    </form>
+
+    <div class="auth-divider">
+      <span>Already have an account?</span>
+    </div>
+
+    <a href="/login" class="register-button">
+      Sign In
+    </a>
+
+  </div>
+
+</div>

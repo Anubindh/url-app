@@ -1,14 +1,330 @@
-<h2>My Links</h2>
-<% if (links.length === 0) { %>
-  <p>No links yet. <a href="/links/add">Add one</a>.</p>
-<% } else { %>
-  <ul>
-    <% links.forEach(link => { %>
-      <li>
-        <a href="<%= link.url %>" target="_blank"><%= link.url %></a> 
-        (<%= link.tag %>) - <%= link.note %> 
-        <a href="/links/delete/<%= link._id %>" onclick="return confirm('Delete this link?')">Delete</a>
-      </li>
-    <% }) %>
-  </ul>
-<% } %>
+<div class="dashboard">
+
+  <section class="dashboard-header">
+
+    <div>
+      <span class="eyebrow">LINK MANAGEMENT PLATFORM</span>
+      <h1>Your Link Dashboard</h1>
+      <p>
+        Save, organize and track your links from one place.
+      </p>
+    </div>
+
+    <a href="/links/add" class="primary-button">
+      <span>+</span>
+      Add New Link
+    </a>
+
+  </section>
+
+
+  <section class="stats-grid">
+
+    <div class="stat-card">
+      <div class="stat-icon">🔗</div>
+
+      <div>
+        <span>Total Links</span>
+        <strong><%= links.length %></strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">↗</div>
+
+      <div>
+        <span>Total Clicks</span>
+        <strong><%= totalClicks || 0 %></strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">⚡</div>
+
+      <div>
+        <span>Average Clicks</span>
+        <strong>
+          <%= links.length ? Math.round(totalClicks / links.length) : 0 %>
+        </strong>
+      </div>
+    </div>
+
+  </section>
+
+
+  <section class="toolbar">
+
+    <div class="search-container">
+      <span class="search-icon">⌕</span>
+
+      <input
+        type="text"
+        id="linkSearch"
+        placeholder="Search links, domains, tags..."
+        onkeyup="filterLinks()"
+      />
+    </div>
+
+    <div class="results-count">
+      <span id="visibleCount"><%= links.length %></span>
+      links
+    </div>
+
+  </section>
+
+
+  <% if (links.length === 0) { %>
+
+    <section class="empty-dashboard">
+
+      <div class="empty-large-icon">🔗</div>
+
+      <h2>Your dashboard is empty</h2>
+
+      <p>
+        Add your first URL and start tracking its performance.
+      </p>
+
+      <a href="/links/add" class="primary-button">
+        + Add Your First Link
+      </a>
+
+    </section>
+
+  <% } else { %>
+
+
+    <section class="links-grid" id="linksList">
+
+      <% links.forEach(link => { %>
+
+        <article
+          class="link-card"
+          data-search="<%= (link.url + ' ' + (link.title || '') + ' ' + (link.domain || '') + ' ' + (link.tag || '') + ' ' + (link.note || '')).toLowerCase() %>"
+        >
+
+          <div class="thumbnail-container">
+
+            <% if (link.thumbnail) { %>
+
+              <img
+                src="<%= link.thumbnail %>"
+                alt="<%= link.title || 'Website thumbnail' %>"
+                class="link-thumbnail"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+
+              <div class="thumbnail-fallback" style="display:none;">
+                <span>↗</span>
+              </div>
+
+            <% } else { %>
+
+              <div class="thumbnail-fallback">
+                <span>↗</span>
+              </div>
+
+            <% } %>
+
+          </div>
+
+
+          <div class="card-body">
+
+            <div class="site-heading">
+
+              <div class="site-info">
+
+                <h2>
+                  <%= link.title || 'Saved Link' %>
+                </h2>
+
+                <span class="domain">
+                  <%= link.domain || link.url %>
+                </span>
+
+              </div>
+
+              <div class="click-badge">
+                <span>↗</span>
+                <%= link.clicks || 0 %>
+              </div>
+
+            </div>
+
+
+            <% if (link.description) { %>
+
+              <p class="description">
+                <%= link.description %>
+              </p>
+
+            <% } %>
+
+
+            <div class="short-url-box">
+
+              <div>
+                <span class="short-label">SHORT URL</span>
+
+                <a
+                  href="/s/<%= link.shortCode %>"
+                  target="_blank"
+                  class="short-link"
+                >
+                  /s/<%= link.shortCode %>
+                </a>
+              </div>
+
+              <button
+                class="copy-button"
+                onclick="copyShortUrl('<%= link.shortCode %>', this)"
+              >
+                Copy
+              </button>
+
+            </div>
+
+
+            <div class="card-meta">
+
+              <% if (link.tag) { %>
+                <span class="tag">
+                  #<%= link.tag %>
+                </span>
+              <% } %>
+
+              <% if (link.note) { %>
+                <span class="note">
+                  <%= link.note %>
+                </span>
+              <% } %>
+
+              <span class="date">
+                <%= new Date(link.createdAt).toLocaleDateString() %>
+              </span>
+
+            </div>
+
+
+            <div class="card-actions">
+
+              <a
+                href="/s/<%= link.shortCode %>"
+                target="_blank"
+                class="open-button"
+              >
+                Open Link ↗
+              </a>
+
+              <a
+                href="/links/delete/<%= link._id %>"
+                class="delete-button"
+                onclick="return confirm('Delete this link?')"
+              >
+                Delete
+              </a>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      <% }) %>
+
+    </section>
+
+
+    <div
+      id="noResults"
+      class="no-results"
+      style="display:none;"
+    >
+      <div>⌕</div>
+      <h3>No links found</h3>
+      <p>Try a different search keyword.</p>
+    </div>
+
+  <% } %>
+
+</div>
+
+
+<script>
+
+function filterLinks() {
+
+  const input = document.getElementById("linkSearch");
+
+  const searchTerm = input.value.toLowerCase().trim();
+
+  const cards = document.querySelectorAll(".link-card");
+
+  const noResults = document.getElementById("noResults");
+
+  const visibleCount = document.getElementById("visibleCount");
+
+  let count = 0;
+
+  cards.forEach(card => {
+
+    const searchData = card.getAttribute("data-search");
+
+    if (searchData.includes(searchTerm)) {
+
+      card.style.display = "flex";
+
+      count++;
+
+    } else {
+
+      card.style.display = "none";
+
+    }
+
+  });
+
+  visibleCount.textContent = count;
+
+  if (count === 0 && cards.length > 0) {
+
+    noResults.style.display = "block";
+
+  } else {
+
+    noResults.style.display = "none";
+
+  }
+
+}
+
+
+function copyShortUrl(shortCode, button) {
+
+  const shortUrl =
+    window.location.origin + "/s/" + shortCode;
+
+  navigator.clipboard.writeText(shortUrl).then(() => {
+
+    const originalText = button.textContent;
+
+    button.textContent = "Copied!";
+
+    button.classList.add("copied");
+
+    setTimeout(() => {
+
+      button.textContent = originalText;
+
+      button.classList.remove("copied");
+
+    }, 1500);
+
+  });
+
+}
+
+</script>

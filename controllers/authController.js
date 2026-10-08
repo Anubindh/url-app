@@ -2,27 +2,54 @@ const User = require('../models/User');
 
 
 exports.showRegister = (req, res) => {
-  res.render('auth/register');
+  res.render('auth/register', {
+    error: null,
+    pageTitle: 'Create Account'
+  });
 };
-
 // Register new user
 exports.register = async (req, res) => {
   const { username, password } = req.body;
+
+  console.log("REGISTER DATA:", req.body);
+
   try {
     const userExists = await User.findOne({ username });
-    if (userExists) return res.render('auth/register', { error: 'Username taken' });
-    const user = new User({ username, password });
+
+    if (userExists) {
+      return res.render('auth/register', {
+        error: 'Username taken',
+        pageTitle: 'Create Account'
+      });
+    }
+
+    const user = new User({
+      username,
+      password
+    });
+
     await user.save();
+
     req.session.userId = user._id;
+
     res.redirect('/links');
+
   } catch (err) {
-    res.render('auth/register', { error: 'Something went wrong' });
+    console.error("REGISTER ERROR:", err);
+
+    res.render('auth/register', {
+      error: err.message,
+      pageTitle: 'Create Account'
+    });
   }
 };
 
 
 exports.showLogin = (req, res) => {
-  res.render('auth/login');
+  res.render('auth/login', {
+    error: null,
+    pageTitle: 'Sign In'
+  });
 };
 
 // Login user

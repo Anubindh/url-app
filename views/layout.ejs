@@ -2,25 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>URL Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'LinkVault' %></title>
   <link rel="stylesheet" href="/styles.css" />
 </head>
+
 <body>
-  <header>
-    <h1><a href="/links">URL Notes</a></h1>
-    <nav>
+
+  <header class="topbar">
+
+    <div class="brand">
+      <a href="<%= userId ? '/' : '/login' %>">
+        <span class="brand-icon">↗</span>
+        <span>LinkVault</span>
+      </a>
+    </div>
+
+    <nav class="main-nav">
+
       <% if (userId) { %>
-        <a href="/links">My Links</a>
-        <a href="/links/add">Add Link</a>
-        <a href="/logout">Logout</a>
+
+        <a href="/" class="nav-link">
+          Dashboard
+        </a>
+
+        <a href="/links/add" class="nav-add">
+          + Add Link
+        </a>
+
+        <a href="/logout" class="nav-link logout-link">
+          Logout
+        </a>
+
       <% } else { %>
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
+
+        <a href="/login" class="nav-link">
+          Login
+        </a>
+
+        <a href="/register" class="nav-add">
+          Get Started
+        </a>
+
       <% } %>
+
     </nav>
+
   </header>
-  <main>
+
+  <main class="main-container">
     <%- body %>
   </main>
+
 </body>
 </html>
